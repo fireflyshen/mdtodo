@@ -4,16 +4,27 @@
     <name>mdtodo</name>
     <vendor>fireflyshen</vendor>
     <description><![CDATA[
-        <p><b>mdtodo</b> is a repository that provides a pure template to make it easier to create a new plugin project.</p>
-        <p>The main goal of this template is to speed up the setup phase of plugin development for both new and experienced developers by preconfiguring the project scaffold and CI, linking to the proper documentation pages, and keeping everything organized.</p>
+        A simple plugin to toggle Markdown checkboxes between [ ] and [x].
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
+    <!-- 1. 这里是扩展点，因为你现在不开发侧边栏或启动任务，保持为空即可 -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.fireflyshen.mdtodo.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.fireflyshen.mdtodo.startup.MyProjectActivity" />
     </extensions>
+
+    <!-- 2. 重要：actions 必须放在 extensions 之外，直接属于 idea-plugin -->
+    <actions>
+        <action id="com.github.fireflyshen.mdtodo.ToggleTodo"
+                class="com.github.fireflyshen.mdtodo.actions.ToggleTodoAction"
+                text="Toggle Markdown Todo">
+
+            <!-- 方案 A：保留 alt，但增加 meta(Command) 作为备选 -->
+            <keyboard-shortcut first-keystroke="alt T" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="meta shift T" keymap="$default"/>
+
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
 </idea-plugin>
